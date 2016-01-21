@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.8.1" last-position="0,134" last-zoom="0.9"
+<dbmodel pgmodeler-ver="0.8.1" last-position="0,18" last-zoom="0.9"
 	 default-schema="public" default-owner="postgres">
 <role name="usr_gas"
       login="true"
@@ -40,7 +40,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_cmp_company">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="122" y="311.111"/>
+	<position x="92" y="366.667"/>
 	<column name="cmp_id" not-null="true">
 		<type name="bigint"/>
 		<comment><![CDATA[cnpj]]></comment>
@@ -48,7 +48,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="cmp_fancy" not-null="true">
 		<type name="varchar" length="255"/>
 	</column>
-	<column name="cmp_create_at" not-null="true">
+	<column name="cmp_create_at" not-null="true" default-value="now()">
 		<type name="timestamp"/>
 	</column>
 	<constraint name="pk_cmp_ids" type="pk-constr" factor="95" table="public.tb_cmp_company">
@@ -122,23 +122,29 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="tb_pro_product">
+<table name="tb_cmp_pro_company_product">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="178.889" y="93.3333"/>
+	<position x="146.667" y="147.778"/>
 	<column name="cmp_id" not-null="true">
 		<type name="bigint"/>
 	</column>
 	<column name="pro_id" not-null="true">
-		<type name="serial"/>
+		<type name="integer"/>
 	</column>
-	<column name="pro_name" not-null="true">
+	<column name="cmp_pro_name">
 		<type name="varchar" length="50"/>
 	</column>
-	<column name="pro_price" not-null="true">
+	<column name="cmp_pro_price" not-null="true">
 		<type name="numeric" length="5" precision="2"/>
 	</column>
-	<constraint name="pk_pro_ids" type="pk-constr" factor="90" table="public.tb_pro_product">
+	<column name="cmp_pro_weight" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="cmp_pro_type_weight" not-null="true">
+		<type name="char" length="2"/>
+	</column>
+	<constraint name="pk_cmp_pro_ids" type="pk-constr" factor="90" table="public.tb_cmp_pro_company_product">
 		<columns names="cmp_id,pro_id" ref-type="src-columns"/>
 	</constraint>
 </table>
@@ -242,6 +248,24 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tb_pro_product">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="108.889" y="54.4444"/>
+	<column name="pro_id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="pro_name" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="pro_icon">
+		<type name="varchar" length="255"/>
+	</column>
+	<constraint name="pk_pro_ids" type="pk-constr" table="public.tb_pro_product">
+		<columns names="pro_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
 <constraint name="fk_bus_usr_usr_id" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_usr_user" table="public.tb_bus_business">
 	<columns names="usr_id" ref-type="src-columns"/>
@@ -266,10 +290,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="pay_id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_pro_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_pro_product">
+<constraint name="fk_cmp_pro_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_cmp_pro_company_product">
 	<columns names="cmp_id" ref-type="src-columns"/>
 	<columns names="cmp_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_cmp_pro_pro_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_pro_product" table="public.tb_cmp_pro_company_product">
+	<columns names="pro_id" ref-type="src-columns"/>
+	<columns names="pro_id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_ord_bus_ids" type="fk-constr" comparison-type="MATCH FULL"
@@ -279,7 +309,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_ord_pro_ids" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_pro_product" table="public.tb_ord_order">
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_pro_company_product" table="public.tb_ord_order">
 	<columns names="cmp_id,pro_id" ref-type="src-columns"/>
 	<columns names="cmp_id,pro_id" ref-type="dst-columns"/>
 </constraint>
@@ -335,7 +365,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_tb_pro_product_tb_cmp_company" type="relfk"
-	 src-table="public.tb_pro_product"
+	 src-table="public.tb_cmp_pro_company_product"
 	 dst-table="public.tb_cmp_company"
 	 src-required="false" dst-required="false"/>
 
@@ -346,7 +376,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <relationship name="rel_tb_ord_order_tb_pro_product" type="relfk"
 	 src-table="public.tb_ord_order"
-	 dst-table="public.tb_pro_product"
+	 dst-table="public.tb_cmp_pro_company_product"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_tb_dri_driver_tb_cmp_company" type="relfk"
@@ -372,6 +402,11 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tb_del_delivery_tb_veh_vehicle" type="relfk"
 	 src-table="public.tb_del_delivery"
 	 dst-table="public.tb_veh_vehicle"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_cmp_pro_company_product_tb_pro_product" type="relfk"
+	 src-table="public.tb_cmp_pro_company_product"
+	 dst-table="public.tb_pro_product"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
