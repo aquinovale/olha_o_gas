@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.8.1" last-position="0,134" last-zoom="0.9"
+	 default-schema="public" default-owner="postgres">
+<role name="usr_gas"
+      login="true"
+      encrypted="true"
+      password="123456">
+</role>
+
+<database name="olha_gas" encoding="UTF8">
+	<role name="usr_gas"/>
+</database>
+
+<schema name="public" protected="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="tb_usr_user">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="622.667" y="369"/>
+	<column name="usr_id" not-null="true">
+		<type name="bigint"/>
+		<comment><![CDATA[numero telefone]]></comment>
+	</column>
+	<column name="usr_name" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="usr_create_at" not-null="true" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_usr_id" type="pk-constr" table="public.tb_usr_user">
+		<columns names="usr_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_cmp_company">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="122" y="311.111"/>
+	<column name="cmp_id" not-null="true">
+		<type name="bigint"/>
+		<comment><![CDATA[cnpj]]></comment>
+	</column>
+	<column name="cmp_fancy" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="cmp_create_at" not-null="true">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_cmp_ids" type="pk-constr" factor="95" table="public.tb_cmp_company">
+		<columns names="cmp_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_pay_payment">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="373.444" y="402.556"/>
+	<column name="pay_id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="pay_name" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="pay_return" not-null="true" default-value="false">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_pay_id" type="pk-constr" table="public.tb_pay_payment">
+		<columns names="pay_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_bus_business">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="1015.67" y="309.444"/>
+	<column name="cmp_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="pay_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="usr_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="bus_id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="bus_amount" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="bus_cancel" not-null="true" default-value="false">
+		<type name="boolean"/>
+	</column>
+	<column name="bus_create_at" not-null="true" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<column name="bus_cancel_at">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_bus_ids" type="pk-constr" factor="95" table="public.tb_bus_business">
+		<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_cmp_pay_company_payment">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="593.667" y="214.222"/>
+	<column name="cmp_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="pay_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<constraint name="pk_cmp_pay_ids" type="pk-constr" table="public.tb_cmp_pay_company_payment">
+		<columns names="cmp_id,pay_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_pro_product">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="178.889" y="93.3333"/>
+	<column name="cmp_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="pro_id" not-null="true">
+		<type name="serial"/>
+	</column>
+	<column name="pro_name" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="pro_price" not-null="true">
+		<type name="numeric" length="5" precision="2"/>
+	</column>
+	<constraint name="pk_pro_ids" type="pk-constr" factor="90" table="public.tb_pro_product">
+		<columns names="cmp_id,pro_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_ord_order">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="1014.44" y="82.2222"/>
+	<column name="cmp_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="pay_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="usr_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="bus_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="pro_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="ord_qtde" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="ord_price" not-null="true">
+		<type name="numeric" length="5" precision="2"/>
+	</column>
+	<constraint name="pk_ord_ids" type="pk-constr" table="public.tb_ord_order">
+		<columns names="cmp_id,pay_id,usr_id,bus_id,pro_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_del_delivery">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="1024.44" y="546.667"/>
+	<column name="cmp_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="pay_id" not-null="true">
+		<type name="smallint"/>
+	</column>
+	<column name="usr_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="bus_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="dri_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="veh_id" not-null="true">
+		<type name="char" length="7"/>
+	</column>
+	<column name="del_status" not-null="true" default-value="0">
+		<type name="smallint"/>
+		<comment><![CDATA[0 - enviado, 1 - direcionado, 2 - entregue, 3 - voltou]]></comment>
+	</column>
+	<column name="del_status_update_at" not-null="true" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_del_ids" type="pk-constr" table="public.tb_del_delivery">
+		<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_dri_driver">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="326.667" y="533.333"/>
+	<column name="cmp_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="dri_id" not-null="true">
+		<type name="bigint"/>
+		<comment><![CDATA[cpf]]></comment>
+	</column>
+	<column name="dri_name" not-null="true">
+		<type name="varchar" length="100"/>
+	</column>
+	<constraint name="pk_dri_ids" type="pk-constr" table="public.tb_dri_driver">
+		<columns names="cmp_id,dri_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tb_veh_vehicle">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="325.556" y="644.444"/>
+	<column name="cmp_id" not-null="true">
+		<type name="integer"/>
+	</column>
+	<column name="veh_id" not-null="true">
+		<type name="char" length="7"/>
+		<comment><![CDATA[Placa]]></comment>
+	</column>
+	<constraint name="pk_veh_ids" type="pk-constr" table="public.tb_veh_vehicle">
+		<columns names="cmp_id,veh_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<constraint name="fk_bus_usr_usr_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_usr_user" table="public.tb_bus_business">
+	<columns names="usr_id" ref-type="src-columns"/>
+	<columns names="usr_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_bus_cmp_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_cmp_pay_company_payment" table="public.tb_bus_business">
+	<columns names="cmp_id,pay_id" ref-type="src-columns"/>
+	<columns names="cmp_id,pay_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_cmp_pay_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_cmp_pay_company_payment">
+	<columns names="cmp_id" ref-type="src-columns"/>
+	<columns names="cmp_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_cmp_pay_pay_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_pay_payment" table="public.tb_cmp_pay_company_payment">
+	<columns names="pay_id" ref-type="src-columns"/>
+	<columns names="pay_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_pro_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_pro_product">
+	<columns names="cmp_id" ref-type="src-columns"/>
+	<columns names="cmp_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_ord_bus_ids" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_bus_business" table="public.tb_ord_order">
+	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="src-columns"/>
+	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_ord_pro_ids" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_pro_product" table="public.tb_ord_order">
+	<columns names="cmp_id,pro_id" ref-type="src-columns"/>
+	<columns names="cmp_id,pro_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_del_dri_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_dri_driver" table="public.tb_del_delivery">
+	<columns names="cmp_id,dri_id" ref-type="src-columns"/>
+	<columns names="cmp_id,dri_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_del_ord_ids" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_bus_business" table="public.tb_del_delivery">
+	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="src-columns"/>
+	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_del_veh_ids" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_veh_vehicle" table="public.tb_del_delivery">
+	<columns names="cmp_id,veh_id" ref-type="src-columns"/>
+	<columns names="cmp_id,veh_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_dri_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_dri_driver">
+	<columns names="cmp_id" ref-type="src-columns"/>
+	<columns names="cmp_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_veh_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_veh_vehicle">
+	<columns names="cmp_id" ref-type="src-columns"/>
+	<columns names="cmp_id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_tb_bus_business_tb_usr_user" type="relfk"
+	 src-table="public.tb_bus_business"
+	 dst-table="public.tb_usr_user"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_cmp_pay_company_payment_tb_cmp_company" type="relfk"
+	 src-table="public.tb_cmp_pay_company_payment"
+	 dst-table="public.tb_cmp_company"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_cmp_pay_company_payment_tb_pay_payment" type="relfk"
+	 src-table="public.tb_cmp_pay_company_payment"
+	 dst-table="public.tb_pay_payment"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_bus_business_tb_cmp_pay_company_payment" type="relfk"
+	 src-table="public.tb_bus_business"
+	 dst-table="public.tb_cmp_pay_company_payment"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_pro_product_tb_cmp_company" type="relfk"
+	 src-table="public.tb_pro_product"
+	 dst-table="public.tb_cmp_company"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_ord_order_tb_bus_business" type="relfk"
+	 src-table="public.tb_ord_order"
+	 dst-table="public.tb_bus_business"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_ord_order_tb_pro_product" type="relfk"
+	 src-table="public.tb_ord_order"
+	 dst-table="public.tb_pro_product"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_dri_driver_tb_cmp_company" type="relfk"
+	 src-table="public.tb_dri_driver"
+	 dst-table="public.tb_cmp_company"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_del_delivery_tb_dri_driver" type="relfk"
+	 src-table="public.tb_del_delivery"
+	 dst-table="public.tb_dri_driver"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_del_delivery_tb_bus_business" type="relfk"
+	 src-table="public.tb_del_delivery"
+	 dst-table="public.tb_bus_business"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_veh_vehicle_tb_cmp_company" type="relfk"
+	 src-table="public.tb_veh_vehicle"
+	 dst-table="public.tb_cmp_company"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_del_delivery_tb_veh_vehicle" type="relfk"
+	 src-table="public.tb_del_delivery"
+	 dst-table="public.tb_veh_vehicle"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
