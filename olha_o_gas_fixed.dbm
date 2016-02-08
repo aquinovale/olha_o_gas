@@ -95,6 +95,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="cmp_fancy" not-null="true">
 		<type name="varchar" length="255"/>
 	</column>
+	<column name="cmp_phone">
+		<type name="char" length="11"/>
+	</column>
 	<column name="cmp_site">
 		<type name="varchar" length="100"/>
 	</column>
@@ -182,6 +185,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="bus_city">
 		<type name="varchar" length="100"/>
 	</column>
+	<column name="bus_uf">
+		<type name="char" length="2"/>
+	</column>
 	<column name="bus_country">
 		<type name="varchar" length="100"/>
 	</column>
@@ -224,6 +230,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="pay_id" not-null="true">
 		<type name="smallint"/>
 	</column>
+	<column name="cmp_pay_active" not-null="true" default-value="true">
+		<type name="boolean"/>
+	</column>
 	<constraint name="pk_cmp_pay_ids" type="pk-constr" table="public.tb_cmp_pay_company_payment">
 		<columns names="cmp_id,pay_id" ref-type="src-columns"/>
 	</constraint>
@@ -250,6 +259,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="cmp_pro_type_weight" not-null="true">
 		<type name="char" length="2"/>
+	</column>
+	<column name="cmp_pro_active" not-null="true" default-value="true">
+		<type name="boolean"/>
 	</column>
 	<constraint name="pk_cmp_pro_ids" type="pk-constr" factor="90" table="public.tb_cmp_pro_company_product">
 		<columns names="cmp_id,pro_id" ref-type="src-columns"/>
@@ -329,10 +341,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="dri_id" not-null="true">
 		<type name="bigint"/>
-		<comment><![CDATA[cpf]]></comment>
+		<comment><![CDATA[telefone]]></comment>
 	</column>
 	<column name="dri_name" not-null="true">
 		<type name="varchar" length="100"/>
+	</column>
+	<column name="dri_active" not-null="true" default-value="true">
+		<type name="boolean"/>
 	</column>
 	<constraint name="pk_dri_ids" type="pk-constr" table="public.tb_dri_driver">
 		<columns names="cmp_id,dri_id" ref-type="src-columns"/>
@@ -349,6 +364,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="veh_id" not-null="true">
 		<type name="char" length="7"/>
 		<comment><![CDATA[Placa]]></comment>
+	</column>
+	<column name="veh_active" not-null="true" default-value="true">
+		<type name="boolean"/>
 	</column>
 	<constraint name="pk_veh_ids" type="pk-constr" table="public.tb_veh_vehicle">
 		<columns names="cmp_id,veh_id" ref-type="src-columns"/>
@@ -376,7 +394,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_tkn_token">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="683.333" y="557.778"/>
+	<position x="689.583" y="460.278"/>
 	<column name="usr_id" not-null="true">
 		<type name="bigint"/>
 	</column>
@@ -419,6 +437,37 @@ END;]]></definition>
 	 table="public.tb_bus_business">
 		<function signature="public.f_insert_delivery()"/>
 </trigger>
+
+<table name="res_responsible">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="91.25" y="681.25"/>
+	<column name="cmp_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="res_id" not-null="true">
+		<type name="bigint"/>
+		<comment><![CDATA[Telefone do responsavel]]></comment>
+	</column>
+	<column name="res_name" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="res_gender" not-null="true">
+		<type name="char"/>
+	</column>
+	<column name="res_user" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="res_pass" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="res_active" not-null="true" default-value="true">
+		<type name="boolean"/>
+	</column>
+	<constraint name="pk_res_reponsible_ids" type="pk-constr" table="public.res_responsible">
+		<columns names="cmp_id,res_id" ref-type="src-columns"/>
+	</constraint>
+</table>
 
 <constraint name="fk_bus_usr_usr_id" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.tb_usr_user" table="public.tb_bus_business">
@@ -469,7 +518,7 @@ END;]]></definition>
 </constraint>
 
 <constraint name="fk_del_dri_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_dri_driver" table="public.tb_del_delivery">
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.tb_dri_driver" table="public.tb_del_delivery">
 	<columns names="cmp_id,dri_id" ref-type="src-columns"/>
 	<columns names="cmp_id,dri_id" ref-type="dst-columns"/>
 </constraint>
@@ -481,19 +530,19 @@ END;]]></definition>
 </constraint>
 
 <constraint name="fk_del_veh_ids" type="fk-constr" comparison-type="MATCH SIMPLE"
-	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_veh_vehicle" table="public.tb_del_delivery">
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.tb_veh_vehicle" table="public.tb_del_delivery">
 	<columns names="cmp_id,veh_id" ref-type="src-columns"/>
 	<columns names="cmp_id,veh_id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_dri_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_dri_driver">
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_dri_driver">
 	<columns names="cmp_id" ref-type="src-columns"/>
 	<columns names="cmp_id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_veh_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_veh_vehicle">
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_veh_vehicle">
 	<columns names="cmp_id" ref-type="src-columns"/>
 	<columns names="cmp_id" ref-type="dst-columns"/>
 </constraint>
@@ -502,6 +551,12 @@ END;]]></definition>
 	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_usr_user" table="public.tb_tkn_token">
 	<columns names="usr_id" ref-type="src-columns"/>
 	<columns names="usr_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_company_resposible_ids" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.res_responsible">
+	<columns names="cmp_id" ref-type="src-columns"/>
+	<columns names="cmp_id" ref-type="dst-columns"/>
 </constraint>
 
 <relationship name="rel_tb_bus_business_tb_usr_user" type="relfk"
@@ -572,6 +627,11 @@ END;]]></definition>
 <relationship name="rel_tb_del_delivery_tb_bus_business" type="relfk"
 	 src-table="public.tb_del_delivery"
 	 dst-table="public.tb_bus_business"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_res_responsible_tb_cmp_company" type="relfk"
+	 src-table="public.res_responsible"
+	 dst-table="public.tb_cmp_company"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>

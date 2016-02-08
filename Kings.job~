@@ -45,3 +45,71 @@ Ex.: SELECT * from f_cancel_order('token', 'bus_id');
 
 
 ENDPOINT: /orderCancel
+
+
+#################### WEB ###################### (Estou considerando que o token seria a sessão)
+
+1 - Momento que a empresa se cadastra
+WEB envia: {cmp_fancy, cmp_site, ...} - Todos os campos da tabela tb_cmp_company e tb_res_responsible
+API retorno: {re: 'OK|ERROR', token: '' }
+
+Regra Geral: Caso seja um error, a mensagem deve estar no campo token.
+Obs.: Deve enviar email de confirmação para ativar a empresa.
+
+ENDPOINT: /companySignIn
+
+2 - Cadastro/Manutencao dos responsaveis, ou seja, usuario que acessarão o site para visualizar os pedidos
+WEB envia: {token, cmp_id, res_id, res_name, res_gender, res_user, res_pass, res_active}
+API retorno: {re: 'OK|ERROR', token: ''}
+
+ENDPOINT: /responsibleSignIn
+
+
+3 - LogIn responsaveis
+WEB envia: {res_user, res_pass}
+API retorno: {re: 'OK|ERROR', token: ''}
+
+ENDPOIND: /logIn
+
+4 - Cadastro/Manutenção dos motoristas
+WEB envia: {token, cmp_id, dri_id, dri_name, dri_active}
+API retorno: {re: 'OK|ERROR', token: ''}
+
+ENDPOINT: /driversSignIn
+
+5 - Cadastro/Manutencao dos veiculos
+WEB envia: {token, cmp_id, veh_id, veh_active}
+API retorno: {re: 'OK|ERROR', token: ''}
+
+ENDPOINT: /vehicleSignIn
+
+6 - Cadastro/Manutencao Produtos
+WEB envia: {token, cmp_id, prod_id, cmp_pro_name, cmp_pro_price, cmp_pro_weight, cmp_pro_type_weight, cmp_pro_active} - Lembre-se do comando UPSERT falado acima
+API retorno: {re: 'OK|ERROR', token: ''}
+
+ENDPOINT: /productsSignIn
+
+7 - Cadastro/Manutencao Forma de Pagamento
+WEB envia: {token, cmp_id, pay_id, cmp_pay_active}
+API retorno: {re: 'OK|ERROR', token: ''}
+
+ENDPOINT: /paymentSignIn
+
+8 - Visualiza Pedidos
+WEB envia: {token}
+API retorno: {re : 'OK|ERROR', token: '', orders: [{payment, usr_id, usr_name, bus_id, location, dri_id, driver, veh_id, vehicle, geohash, amount, del_status}, {payment, usr_id, usr_name, bus_id, location, dri_id, driver, veh_id, vehicle, geohash, amount, del_status}]}
+
+IMPORTANTE: Usar a vw_company_business(cmp_id) que deverá ser usada para executar as regras de negócio.
+
+
+ENDPOINT: /showOrders
+
+9 - Recebe/Modifica pedidos
+WEB envia: {token, usr_id, bus_id, dri_id, veh_id, del_status}
+API retorno: {re : 'OK|ERROR', token: ''}
+
+
+IMPORTANTE: Usar a vw_update_order(cmp_id, usr_id, bus_id, dri_id, veh_id, del_status) que deverá ser usada para executar as regras de negócio.
+ENDPOINT: /updateOrders
+
+
