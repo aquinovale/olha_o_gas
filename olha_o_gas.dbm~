@@ -15,49 +15,29 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<roles names="role_admin" role-type="member" />
 </role>
 
-
-<role name="role_companies">
-</role>
-
-<role name="role_users">
-</role>
-
-<role name="role_drivers">
-</role>
-
-
-<role name="role_admin">
-</role>
-
-<role name="admin"
-      login="true"
-      encrypted="true"
-      password="123456">
-	<roles names="role_admin" role-type="member" />
-</role>
-
-<role name="company"
-      login="true"
-      encrypted="true"
-      password="123456">
-
-</role>
-
-<role name="driver"
-      login="true"
-      encrypted="true"
-      password="123456">
-	<roles names="role_drivers" role-type="member" />
-</role>
-
-
 <role name="app"
-      login="true"
-      encrypted="true"
-      password="123456">
-	<roles names="role_users" role-type="member" />
+      login="true">
 </role>
 
+<role name="app_driver"
+      login="true">
+</role>
+
+<role name="app_company"
+      login="true">
+</role>
+
+<role name="role_usr">
+	<roles names="app" role-type="member" />
+</role>
+
+<role name="role_driver">
+	<roles names="app_driver" role-type="member" />
+</role>
+
+<role name="role_company">
+	<roles names="app_company" role-type="member" />
+</role>
 
 <database name="olha_gas" encoding="UTF8">
 	<role name="usr_gas"/>

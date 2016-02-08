@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.8.1" last-position="153,0" last-zoom="0.85"
+<dbmodel pgmodeler-ver="0.8.1" last-position="0,0" last-zoom="0.8"
 	 default-owner="postgres">
 <role name="role_admin">
 </role>
@@ -15,7 +15,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<roles names="role_admin" role-type="member" />
 </role>
 
-
 <role name="role_companies">
 </role>
 
@@ -23,10 +22,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </role>
 
 <role name="role_drivers">
-</role>
-
-
-<role name="role_admin">
 </role>
 
 <role name="admin"
@@ -40,7 +35,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
       login="true"
       encrypted="true"
       password="123456">
-
+	<roles names="role_companies" role-type="member" />
 </role>
 
 <role name="driver"
@@ -50,14 +45,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<roles names="role_drivers" role-type="member" />
 </role>
 
-
 <role name="app"
       login="true"
       encrypted="true"
       password="123456">
 	<roles names="role_users" role-type="member" />
 </role>
-
 
 <database name="olha_gas" encoding="UTF8">
 	<role name="usr_gas"/>
@@ -69,13 +62,19 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_usr_user">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="622.667" y="369"/>
+	<position x="689.334" y="307.889"/>
 	<column name="usr_id" not-null="true">
 		<type name="bigint"/>
 		<comment><![CDATA[numero telefone]]></comment>
 	</column>
 	<column name="usr_name" not-null="true">
 		<type name="varchar" length="255"/>
+	</column>
+	<column name="usr_gender" not-null="true">
+		<type name="char"/>
+	</column>
+	<column name="usr_phone" not-null="true">
+		<type name="char" length="11"/>
 	</column>
 	<column name="usr_create_at" not-null="true" default-value="now()">
 		<type name="timestamp"/>
@@ -88,13 +87,49 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_cmp_company">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="92" y="366.667"/>
+	<position x="10.8889" y="314.445"/>
 	<column name="cmp_id" not-null="true">
 		<type name="bigint"/>
 		<comment><![CDATA[cnpj]]></comment>
 	</column>
 	<column name="cmp_fancy" not-null="true">
 		<type name="varchar" length="255"/>
+	</column>
+	<column name="cmp_site">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="cmp_street">
+		<type name="varchar" length="150"/>
+	</column>
+	<column name="cmp_neighborhood">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="cmp_city">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="cmp_country">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="cmp_zipcode">
+		<type name="char" length="8"/>
+	</column>
+	<column name="cmp_number">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="cmp_street_line2">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="cmp_geohash">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="cmp_open_shop">
+		<type name="time"/>
+	</column>
+	<column name="cmp_close_shop">
+		<type name="time"/>
+	</column>
+	<column name="cmp_active" not-null="true" default-value="true">
+		<type name="boolean"/>
 	</column>
 	<column name="cmp_create_at" not-null="true" default-value="now()">
 		<type name="timestamp"/>
@@ -107,7 +142,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_pay_payment">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="373.444" y="402.556"/>
+	<position x="379" y="352.556"/>
 	<column name="pay_id" not-null="true">
 		<type name="serial"/>
 	</column>
@@ -125,7 +160,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_bus_business">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="1015.67" y="309.444"/>
+	<position x="1119.84" y="232.361"/>
 	<column name="cmp_id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -138,13 +173,37 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="bus_id" not-null="true">
 		<type name="integer"/>
 	</column>
-	<column name="bus_amount" not-null="true">
+	<column name="bus_street">
+		<type name="varchar" length="150"/>
+	</column>
+	<column name="bus_neighborhood">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="bus_city">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="bus_country">
+		<type name="varchar" length="100"/>
+	</column>
+	<column name="bus_zipcode">
+		<type name="char" length="8"/>
+	</column>
+	<column name="bus_number">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="bus_street_line2">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="bus_geohash">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="bus_amount">
 		<type name="numeric" length="10" precision="2"/>
 	</column>
-	<column name="bus_cancel" not-null="true" default-value="false">
+	<column name="bus_cancel" default-value="false">
 		<type name="boolean"/>
 	</column>
-	<column name="bus_create_at" not-null="true" default-value="now()">
+	<column name="bus_create_at" default-value="now()">
 		<type name="timestamp"/>
 	</column>
 	<column name="bus_cancel_at">
@@ -158,7 +217,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_cmp_pay_company_payment">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="593.667" y="214.222"/>
+	<position x="675.889" y="179.778"/>
 	<column name="cmp_id" not-null="true">
 		<type name="bigint"/>
 	</column>
@@ -200,7 +259,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_ord_order">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="1014.44" y="82.2222"/>
+	<position x="1062.22" y="52.2222"/>
 	<column name="cmp_id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -230,7 +289,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_del_delivery">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="1024.44" y="546.667"/>
+	<position x="1085.55" y="560"/>
 	<column name="cmp_id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -264,7 +323,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_dri_driver">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="326.667" y="533.333"/>
+	<position x="390" y="507.777"/>
 	<column name="cmp_id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -283,7 +342,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="tb_veh_vehicle">
 	<schema name="public"/>
 	<role name="usr_gas"/>
-	<position x="325.556" y="644.444"/>
+	<position x="402.223" y="610"/>
 	<column name="cmp_id" not-null="true">
 		<type name="integer"/>
 	</column>
@@ -314,20 +373,67 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
+<table name="tb_tkn_token">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<position x="683.333" y="557.778"/>
+	<column name="usr_id" not-null="true">
+		<type name="bigint"/>
+	</column>
+	<column name="tkn_token" not-null="true">
+		<type name="varchar" length="32"/>
+	</column>
+	<column name="tkn_create_at" not-null="true" default-value="now()">
+		<type name="timestamp"/>
+	</column>
+	<constraint name="pk_tkn_id" type="pk-constr" table="public.tb_tkn_token">
+		<columns names="usr_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<function name="f_insert_delivery"
+		window-func="false"
+		returns-setof="false"
+		behavior-type="CALLED ON NULL INPUT"
+		function-type="VOLATILE"
+		security-type="SECURITY INVOKER"
+		execution-cost="1"
+		row-amount="0">
+	<schema name="public"/>
+	<role name="usr_gas"/>
+	<language name="plpgsql" protected="true" sql-disabled="true"/>
+	<return-type>
+	<type name="trigger"/>
+	</return-type>
+	<definition><![CDATA[BEGIN
+
+   INSERT INTO tb_del_delivery(cmp_id, pay_id, usr_id, bus_id) VALUES (new.cmp_id, new.pay_id, new.usr_id, new.bus_id);
+
+   RETURN new;
+
+END;]]></definition>
+</function>
+
+<trigger name="tr_insert_delivery" firing-type="AFTER" per-line="true" constraint="false"
+	 ins-event="true" del-event="false" upd-event="false" trunc-event="false"
+	 table="public.tb_bus_business">
+		<function signature="public.f_insert_delivery()"/>
+</trigger>
+
 <constraint name="fk_bus_usr_usr_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_usr_user" table="public.tb_bus_business">
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.tb_usr_user" table="public.tb_bus_business">
 	<columns names="usr_id" ref-type="src-columns"/>
 	<columns names="usr_id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_bus_cmp_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_cmp_pay_company_payment" table="public.tb_bus_business">
+	 upd-action="CASCADE" del-action="RESTRICT" ref-table="public.tb_cmp_pay_company_payment" table="public.tb_bus_business">
 	<columns names="cmp_id,pay_id" ref-type="src-columns"/>
 	<columns names="cmp_id,pay_id" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="fk_cmp_pay_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_cmp_pay_company_payment">
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_cmp_pay_company_payment">
 	<columns names="cmp_id" ref-type="src-columns"/>
 	<columns names="cmp_id" ref-type="dst-columns"/>
 </constraint>
@@ -339,7 +445,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_cmp_pro_cmp_id" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_cmp_pro_company_product">
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_cmp_pro_company_product">
 	<columns names="cmp_id" ref-type="src-columns"/>
 	<columns names="cmp_id" ref-type="dst-columns"/>
 </constraint>
@@ -351,7 +457,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="fk_ord_bus_ids" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_bus_business" table="public.tb_ord_order">
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_bus_business" table="public.tb_ord_order">
 	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="src-columns"/>
 	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="dst-columns"/>
 </constraint>
@@ -368,13 +474,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="cmp_id,dri_id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_del_ord_ids" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_bus_business" table="public.tb_del_delivery">
+<constraint name="fk_del_bus_ids" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_bus_business" table="public.tb_del_delivery">
 	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="src-columns"/>
 	<columns names="cmp_id,pay_id,usr_id,bus_id" ref-type="dst-columns"/>
 </constraint>
 
-<constraint name="fk_del_veh_ids" type="fk-constr" comparison-type="MATCH FULL"
+<constraint name="fk_del_veh_ids" type="fk-constr" comparison-type="MATCH SIMPLE"
 	 upd-action="NO ACTION" del-action="RESTRICT" ref-table="public.tb_veh_vehicle" table="public.tb_del_delivery">
 	<columns names="cmp_id,veh_id" ref-type="src-columns"/>
 	<columns names="cmp_id,veh_id" ref-type="dst-columns"/>
@@ -390,6 +496,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 upd-action="NO ACTION" del-action="CASCADE" ref-table="public.tb_cmp_company" table="public.tb_veh_vehicle">
 	<columns names="cmp_id" ref-type="src-columns"/>
 	<columns names="cmp_id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="fk_usr_tkn_id" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="public.tb_usr_user" table="public.tb_tkn_token">
+	<columns names="usr_id" ref-type="src-columns"/>
+	<columns names="usr_id" ref-type="dst-columns"/>
 </constraint>
 
 <relationship name="rel_tb_bus_business_tb_usr_user" type="relfk"
@@ -437,11 +549,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="public.tb_dri_driver"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_tb_del_delivery_tb_bus_business" type="relfk"
-	 src-table="public.tb_del_delivery"
-	 dst-table="public.tb_bus_business"
-	 src-required="false" dst-required="false"/>
-
 <relationship name="rel_tb_del_delivery_tb_veh_vehicle" type="relfk"
 	 src-table="public.tb_del_delivery"
 	 dst-table="public.tb_veh_vehicle"
@@ -455,6 +562,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <relationship name="rel_tb_veh_vehicle_tb_cmp_company" type="relfk"
 	 src-table="public.tb_veh_vehicle"
 	 dst-table="public.tb_cmp_company"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_tkn_token_tb_usr_user" type="relfk"
+	 src-table="public.tb_tkn_token"
+	 dst-table="public.tb_usr_user"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tb_del_delivery_tb_bus_business" type="relfk"
+	 src-table="public.tb_del_delivery"
+	 dst-table="public.tb_bus_business"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>

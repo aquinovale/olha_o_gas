@@ -1,0 +1,47 @@
+###### Job's para API ########
+# Kings, a cada tarefa concluída, por favor, adiciona um OK 
+# na frente da tarefa e faça um git push
+#
+# Caso deseje alterar algum retorno, faça um git push
+##############################
+
+################### APP ####################
+
+1 - Quando o aplicativo for instalado pela primeira vez, 
+o usuário deverar se cadastrar. Os dados serão em JSON:
+APP envia : {usr_name, usr_gender, usr_phone} - Este procedimento acontecerá somente uma vez, e os valores devem ser armazenados
+API retorno: {re: 'OK|ERROR', token: ''} - Recebe um token que deverá ser armazenado na tabela tb_tkn_token e retornado à API
+
+Regra Geral: Caso seja um error, a mensagem deve estar no campo token.
+
+ENDPOINT: /signIn
+
+2 - Quando o usuário inicia o pedido é feito a busca por sua localização, essa posição deve ser enviada ao servidor 
+para identificar quais as empresas que fazem a entrega naquele lugar.
+APP Envia: {token, geohash} - Este procedimento deverá gerar log's armazenados em /var/log/olhagas/positions.gps
+API retorna: {re: 'OK|ERROR', token: '', bus_id: '', products: [ {cmp_id, pro_id, pay_id, name, price},{cmp_id, pro_id, pay_id, name, price} ] } - Recebe um novo token que deverá ser armazenado na tabela tb_tkn_token e retornado à API, caso um já exista, deverá ser substituído.
+Obs.: Na versão nova do postgresql existe o comando UPSERT (mistura de insert com update) acho interessante usar neste caso. (https://wiki.postgresql.org/wiki/UPSERT#PostgreSQL_.28today.29)
+
+IMPORTANTE: Usar view vw_products_gps('geohash') que deverá ser usada para trazer o resultado esperado.
+Ex.: SELECT * from vw_products_gps('geohash');
+Obs2: Caso a view não gere resultado, o JSON deve ficar assim {re: 'OK|ERROR', token: '', bus_id: '', products : []}
+
+
+ENDPOINT: /products
+
+3 - Pedido do usuario.
+APP envia: {token, cmp_id, pay_id, bus_id, orders : [ {pro_id, ord_qtde, ord_price}, {pro_id, ord_qtde, ord_price } ] }
+API retorno: {re : 'OK|ERROR', token: ''} -  Recebe um novo token que deverá ser armazenado na tabela tb_tkn_token e retornado à API, caso um já exista, deverá ser substituído.
+
+
+ENDPOIND: /order
+
+4 - Cancelar Pedido - Por algum motivo o usuário decide cancelar o pedido
+APP envia: {token, bus_id}
+API retorno: {re: 'OK|ERROR', token: ''} - Recebe um token que deverá ser armazenado na tabela tb_tkn_token e retornado à API
+
+IMPORTANTE: Usar a funçao f_cancel_order(token, bus_id) que deverá ser usada para executar as regras de negócio.
+Ex.: SELECT * from f_cancel_order('token', 'bus_id');
+
+
+ENDPOINT: /orderCancel
