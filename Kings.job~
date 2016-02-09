@@ -58,6 +58,12 @@ Obs.: Deve enviar email de confirmação para ativar a empresa.
 
 ENDPOINT: /companySignIn
 
+1.1 - Confirma recebimento de email
+WEB envia: {token}
+API retorno: {re: 'OK|ERROR', token: '' }
+
+ENDPOINT: /emailValidation
+
 2 - Cadastro/Manutencao dos responsaveis, ou seja, usuario que acessarão o site para visualizar os pedidos
 WEB envia: {token, cmp_id, res_id, res_name, res_gender, res_user, res_pass, res_active}
 API retorno: {re: 'OK|ERROR', token: ''}
@@ -108,8 +114,65 @@ ENDPOINT: /showOrders
 WEB envia: {token, usr_id, bus_id, dri_id, veh_id, del_status}
 API retorno: {re : 'OK|ERROR', token: ''}
 
-
 IMPORTANTE: Usar a vw_update_order(cmp_id, usr_id, bus_id, dri_id, veh_id, del_status) que deverá ser usada para executar as regras de negócio.
+
 ENDPOINT: /updateOrders
 
+10 - Mostra Items dos pedidos
+WEB envia: {token, usr_id, bus_id}
+API retorno: {re: 'OK|ERROR', token: '', items: [{pro_id, ord_qtde, ord_price}, {pro_id, ord_qtde, ord_price}]}
 
+
+IMPORTANTE: Usar a vw_show_itens(cmp_id, usr_id, bus_id) que deverá ser usada para executar as regras de negócio.
+
+ENDPOINT: /showItens
+
+10 - Lista de Produtos - Cada empresa deve cadastrar os produtos que irá entregar
+WEB envia: {}
+API retorna: {re : 'OK|ERROR', products: [{prod_id, pro_name, pro_icon}, {prod_id, pro_name, pro_icon}]}
+
+ENDPOINT: /public/products
+
+11 - Lista Produtos das empresa
+
+WEB envia: {token}
+API retorna: {re : 'OK|ERROR', products: [{cmp_id, prod_id, cmp_pro_name, cmp_pro_price, cmp_pro_weight, cmp_pro_type_weight, cmp_pro_active}]}
+
+
+ENDPOINT: /productsCompany
+
+
+
+12 - Lista Formas de Pagamentos - Cada empresa deve cadastrar as formas que aceita
+WEB envia: {}
+API retorna: {re: 'OK|ERROR', payments: [{pay_id, pay_name}]}
+
+ENDPOINT: /public/payments
+
+
+13 - Lista Formas de Pagamentos das empresas
+WEB envia: {token}
+API retorna: {re: 'OK|ERROR', payments: [{pay_id, pay_name, cmp_pay_active}]}
+
+ENDPOINT: /productsCompany
+
+
+14 - Lista motoristas da empresa
+WEB envia: {token}
+API retorna: {re: 'OK|ERROR', drivers: [{dri_id, dri_name, dri_active}]}
+
+ENDPOINT: /driversCompany
+
+
+13 - Lista veículos das empresas
+WEB envia: {token}
+API retorna: {re: 'OK|ERROR', vehicles: [{veh_id, veh_active}]}
+
+ENDPOINT: /vehiclesCompany
+
+
+14 - lista responsaveis da empresas
+WEB envia: {token}
+API retorno: {re: 'OK|ERROR', responsibles : {res_id, res_name, res_gender, res_user, res_pass, res_active}}
+
+ENDPOINT: /responsibleSignIn

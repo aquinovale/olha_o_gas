@@ -117,24 +117,46 @@ API retorno: {re : 'OK|ERROR', token: '', orders: [{payment, usr_id, usr_name, b
 
 Obs.: O campo del_status que define o status de entrega do produto.
 
-0 - enviado, 1 - direcionado (o motorista fará a entrega), 2 - entregue, 3 - voltou (ninguem atendeu o entregador), 4 - cancelado (usuario cancelou o pedido) , 5 - removido (não será entregue por algum motivo)
+0 - enviado, 1 - direcionado, 2 - entregue, 3 - voltou, 4- cancelado, 5 - removido
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ENDPOINT: /showOrders
 
-13 - Recebe/Modifica pedidos
+9 - Recebe/Modifica pedidos
 WEB envia: {token, usr_id, bus_id, dri_id, veh_id, del_status}
 API retorno: {re : 'OK|ERROR', token: ''}
 
-Obs.: Tela que da o poder para o adm adicionar o motorista, o carro e o status de entrega do produto que no caso deverá ser 1 (direcionado) ou 5 (removido)
+IMPORTANTE: Usar a vw_update_order(cmp_id, usr_id, bus_id, dri_id, veh_id, del_status) que deverá ser usada para executar as regras de negócio.
 
 ENDPOINT: /updateOrders
 
-14 - Mostra Items dos pedidos
+10 - Mostra Items dos pedidos
 WEB envia: {token, usr_id, bus_id}
 API retorno: {re: 'OK|ERROR', token: '', items: [{pro_id, ord_qtde, ord_price}, {pro_id, ord_qtde, ord_price}]}
 
-Obs.: Quando o responsavel (adm) clica em um pedido, o mesmo deve mostrar os itens a serem entregues.
+
+IMPORTANTE: Usar a vw_show_itens(cmp_id, usr_id, bus_id) que deverá ser usada para executar as regras de negócio.
+
 ENDPOINT: /showItens
 
 

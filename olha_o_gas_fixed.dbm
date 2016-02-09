@@ -322,7 +322,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="del_status" not-null="true" default-value="0">
 		<type name="smallint"/>
-		<comment><![CDATA[0 - enviado, 1 - direcionado, 2 - entregue, 3 - voltou]]></comment>
+		<comment><![CDATA[0 - enviado, 1 - direcionado, 2 - entregue, 3 - voltou, 4- cancelado, 5 - removido]]></comment>
 	</column>
 	<column name="del_status_update_at" not-null="true" default-value="now()">
 		<type name="timestamp"/>
